@@ -1,49 +1,70 @@
+import domain.model.*
 import domain.model.baggage.pack.BaggagePackage
-import domain.model.baggage.regular.Regular
-import domain.model.baggage.regular.RegularBasic
-import domain.model.baggage.regular.RegularClassic
-import domain.model.baggage.vclub.ClubBasic
-import domain.model.baggage.vclub.ClubClassic
-import domain.model.baggage.vclub.Plus
-import domain.model.baggage.vclub.VClub
+import domain.model.baggage.vclub.ClubPlus
+import domain.model.seat.Seat
+import domain.model.seat.SeatClass
+import domain.model.seat.SeatStatus
 import java.math.BigDecimal
+import java.time.LocalDateTime
+import java.time.Month
 
 fun main() {
- val basicPrice = BigDecimal(200)
- val classicPrice = BigDecimal(450)
- val plusPrice = BigDecimal(700)
 
- val basicClub: VClub = ClubBasic(basicPrice)
- val classicClub: VClub = ClubClassic(classicPrice)
+    val flight = Flight(
+        number = "Y4 778",
+        aircraft = Aircraft("Airbus", "A320"),
+        price = BigDecimal(100.0),
+        departureArrivalBooking = getAirportPair()
 
- println(basicClub.name)
- println(basicClub.price)
+    )
 
- println()
+    println(flight.format())
 
- println(classicClub.name)
- println(classicClub.price)
+    val ticket = Ticket(
+        flight,
+        passenger = getPassenger(),
+        seat = getSeat(),
+        baggagePackage = getBaggagePackage()
+    )
 
- println()
+    println(ticket.format())
 
- val basic : Regular = RegularBasic(basicPrice)
- val classic: Regular = RegularClassic(classicPrice)
+}
 
+fun getBaggagePackage(): ClubPlus {
+    return ClubPlus(
+        price = BigDecimal(300.0)
+    )
+}
 
- println(basic.name)
- println(basic.price)
+fun getSeat(): Seat {
+    return Seat(
+        number = "38F",
+        price = BigDecimal(150.0),
+        seatStatus = SeatStatus.RESERVED,
+        seatClass = SeatClass.PLUS
+    )
 
- println()
+}
 
- println(classic.name)
- println(classic.price)
- println()
+fun getPassenger(): Passenger {
+    return Passenger(
+        name = "Juan Meloso",
+        email = "jmeloso@gmail.com",
+        phone = "3883727182"
+    )
 
- val plus: BaggagePackage = Plus(plusPrice)
+}
 
- println(plus.name)
- println(plus.price)
-
- val vClub: VClub = VClub(basicPrice)
-
+fun getAirportPair(): Pair<AirportBooking, AirportBooking> {
+    return Pair(
+        AirportBooking(
+            airport = Airport("BOG", "Bogotá"),
+            dateTime = LocalDateTime.of(2023, Month.JANUARY, 10, 13, 0, 0)
+        ),
+        AirportBooking(
+            airport = Airport("CUN", "Cancún"),
+            dateTime = LocalDateTime.of(2023, Month.JANUARY, 10, 17, 30, 0)
+        )
+    )
 }

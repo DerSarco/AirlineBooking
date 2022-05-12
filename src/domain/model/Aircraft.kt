@@ -3,8 +3,8 @@ package domain.model
 import domain.model.seat.SeatSection
 
 data class Aircraft(
-    val code: String,
+    val name: String,
     val model: String,
-    val airline: Airline,
-    val seatSections: Map<Int, SeatSection>
+    val airline: Airline = Airline("VL", "Volarios"),
+//    val seatSections: Map<Int, SeatSection>
 )
