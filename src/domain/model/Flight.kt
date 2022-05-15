@@ -1,5 +1,6 @@
 package domain.model
 
+import domain.model.seat.SeatSection
 import domain.presentation.Formatter
 import java.math.BigDecimal
 import java.time.Duration

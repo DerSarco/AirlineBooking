@@ -1,6 +1,6 @@
 import domain.model.Flight
-import domain.usecases.GetFlights
-import domain.usecases.GetTicket
+import domain.usecases.flight.GetFlights
+import domain.usecases.ticket.GetTicket
 import presentation.PresentationFormat
 import presentation.flight.PresentationFactory
 import presentation.ticket.formats.TicketHTMLFormat

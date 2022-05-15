@@ -1,4 +1,4 @@
-package domain.usecases
+package domain.usecases.flight
 
 import domain.model.Aircraft
 import domain.model.Airport
@@ -8,11 +8,12 @@ import domain.presentation.Formatter
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.Month
-import kotlin.reflect.KClass
 
-class GetFlights(
-    private val formatter: Formatter<Flight>
-) {
+/**
+ *  1. Mostrar los vuelos disponibles de un mes
+ **/
+
+class GetFlights {
 
     private val flight = Flight(
         number = "Y4 778",
@@ -22,16 +23,18 @@ class GetFlights(
 
     )
 
-    fun invoke(): String {
+    fun invoke(month: Month): Map<Int, Flight> {
 
-        val flights = listOf(
-            flight,
-            flight,
-            flight,
-            flight,
+        val flightsMap = mapOf(
+            1 to flight,
+            2 to flight,
+            3 to flight,
         )
-        return formatter.format(flights)
-        
+
+        return flightsMap.filter { flightEntry ->
+            flightEntry.value.departureArrivalBooking.first.dateTime.month == month
+        }
+
     }
 
     fun getFlight(): Flight {

@@ -1,4 +1,4 @@
-package domain.usecases
+package domain.usecases.ticket
 
 import domain.model.Flight
 import domain.model.Passenger
