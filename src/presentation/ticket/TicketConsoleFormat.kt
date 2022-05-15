@@ -1,4 +1,4 @@
-package presentation
+package presentation.ticket
 
 import domain.model.Ticket
 import domain.presentation.Formatter

@@ -12,14 +12,16 @@ import java.time.Month
 class GetFlights(
     private val formatter: Formatter<Flight>
 ) {
-    fun invoke(): String {
-        val flight = Flight(
-            number = "Y4 778",
-            aircraft = Aircraft("Airbus", "A320"),
-            price = BigDecimal(100.0),
-            departureArrivalBooking = getAirportPair()
 
-        )
+    private val flight = Flight(
+        number = "Y4 778",
+        aircraft = Aircraft("Airbus", "A320"),
+        price = BigDecimal(100.0),
+        departureArrivalBooking = getAirportPair()
+
+    )
+
+    fun invoke(): String {
 
         val flights = listOf(
             flight,
@@ -29,6 +31,10 @@ class GetFlights(
         )
         return formatter.format(flights)
         
+    }
+
+    fun getFlight(): Flight {
+        return flight
     }
 
 
