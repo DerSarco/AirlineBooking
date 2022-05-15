@@ -3,14 +3,14 @@ package presentation.flight
 import domain.model.Flight
 import domain.presentation.Formatter
 import presentation.PresentationFormat
-import java.util.EventListener
+import presentation.flight.formats.FlightConsoleFormat
 
-class FlightPresentationFactory {
+class PresentationFactory: presentation.PresentationFactory<Flight> {
 
-    fun getPresentationFormat(format: PresentationFormat): Formatter<Flight>{
-        return when(format){
+    override fun getPresentationFormat(format: PresentationFormat): Formatter<Flight> {
+        return when (format) {
             PresentationFormat.CONSOLE -> FlightConsoleFormat()
-            PresentationFormat.HTML -> FlightHtTMLFormat()
+            PresentationFormat.HTML -> FlightConsoleFormat()
             else -> FlightConsoleFormat()
         }
     }

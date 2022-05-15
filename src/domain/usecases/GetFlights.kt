@@ -8,6 +8,7 @@ import domain.presentation.Formatter
 import java.math.BigDecimal
 import java.time.LocalDateTime
 import java.time.Month
+import kotlin.reflect.KClass
 
 class GetFlights(
     private val formatter: Formatter<Flight>
