@@ -11,17 +11,4 @@ data class Ticket(
     val seat: Seat,
     val baggagePackage: BaggagePackage,
     val totalPrice: BigDecimal = flight.price + baggagePackage.price + seat.price
-) : Formatter {
-
-    override fun format(): String {
-        return """
-           Flight Number: ${flight.number}
-           Flight Aircraft: ${flight.aircraft.name} - ${flight.aircraft.model}
-           Airline: ${flight.aircraft.airline.name}
-           Seat: ${seat.number}
-           Seat Class: ${seat.seatClass.name}
-           Boarding Turn: ${seat.seatClass.ordinal}
-           Total Price: $totalPrice
-        """.trimIndent()
-    }
-}
+)

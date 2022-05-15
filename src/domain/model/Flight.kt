@@ -14,20 +14,4 @@ data class Flight(
         departureArrivalBooking.second.dateTime,
         departureArrivalBooking.first.dateTime
     )
-) : Formatter {
-    override fun format(): String {
-        val departure = departureArrivalBooking.first
-        val arrival = departureArrivalBooking.second
-
-        return """
-            $number
-            Origin: ${departure.airport.name}
-            Origin DateTime: ${departure.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}
-            Arrival: ${arrival.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}
-            Arrival DateTime: ${arrival.dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)}
-            Duration: $duration
-            Price: $${price}
-            
-        """.trimIndent()
-    }
-}
+)
