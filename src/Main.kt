@@ -1,3 +1,8 @@
+import data.aircraft.AircraftLocalDataSource
+import data.airport.AirportLocalDataSource
+import data.airportbook.AirportBookingLocalSource
+import data.flight.FlightLocalDataSource
+import domain.datasource.aircraft.AircraftDataSource
 import domain.model.Flight
 import domain.usecases.flight.GetFlights
 import domain.usecases.ticket.GetTicket
@@ -9,13 +14,16 @@ import java.time.Month
 
 fun main() {
 
-    val flights = GetFlights().invoke(Month.JANUARY)
-    val flight = GetFlights().getFlight()
-    val getTicket = GetTicket(flight, TicketConsoleFormat())
-    val ticket = getTicket.invoke()
+    val aircraftLocalDataSource = AircraftLocalDataSource()
+    val airportLocalDataSource = AirportLocalDataSource()
+    val airBookingLocalDataSource = AirportBookingLocalSource(airportLocalDataSource)
+    val flightLocalDataSource = FlightLocalDataSource(
+        aircraftLocalDataSource,
+        airBookingLocalDataSource
+    )
+
+    val flights = GetFlights(flightLocalDataSource).invoke(Month.JANUARY)
 
     println(flights)
-    println()
-    println(ticket)
 
 }

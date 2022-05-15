@@ -1,5 +1,6 @@
 package domain.usecases.flight
 
+import domain.datasource.flight.FlightDataSource
 import domain.model.Aircraft
 import domain.model.Airport
 import domain.model.AirportBooking
@@ -17,37 +18,14 @@ import java.time.Month
  *  1. Mostrar los vuelos disponibles de un mes
  **/
 
-class GetFlights {
-
-    private val flight = Flight(
-        number = "Y4 778",
-        aircraft = Aircraft("Airbus", "A320", seatSections = getSeatSection()),
-        price = BigDecimal(100.0),
-        departureArrivalBooking = getAirportPair()
-
-    )
+class GetFlights(
+    private val flightDataSource: FlightDataSource
+) {
 
     fun invoke(month: Month): Map<Int, Flight> {
-
-        val flightsMap = mapOf(
-            1 to flight,
-            2 to flight,
-            3 to flight,
-        )
-
-        return flightsMap.filter { flightEntry ->
+        return flightDataSource.getFlights().filter { flightEntry ->
             flightEntry.value.departureArrivalBooking.first.dateTime.month == month
         }
-
-    }
-
-
-    /**
-     * Esta función solo está aqui por que el flight lo necesitaba para una instancia de ticket que se encuentra en
-     * Main.
-     **/
-    fun getFlight(): Flight {
-        return flight
     }
 
 
@@ -80,22 +58,18 @@ class GetFlights {
             Seat(
                 "1",
                 price,
-                SeatStatus.AVAILABLE,
                 seatClass
             ),    Seat(
                 "2",
                 price,
-                SeatStatus.AVAILABLE,
                 seatClass
             ),    Seat(
                 "3",
                 price,
-                SeatStatus.AVAILABLE,
                 seatClass
             ),    Seat(
                 "4",
                 price,
-                SeatStatus.AVAILABLE,
                 seatClass
             )
         )
