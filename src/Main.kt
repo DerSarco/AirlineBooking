@@ -5,15 +5,20 @@ import domain.model.seat.SeatClass
 import domain.model.seat.SeatStatus
 import domain.usecases.GetFlights
 import domain.usecases.GetTicket
+import presentation.PresentationFormat
+import presentation.flight.FlightConsoleFormat
 import presentation.flight.FlightHtTMLFormat
+import presentation.flight.FlightPresentationFactory
 import presentation.ticket.TicketConsoleFormat
 import presentation.ticket.TicketHTMLFormat
 import java.math.BigDecimal
 
 fun main() {
-    val getFlights = GetFlights(FlightHtTMLFormat())
-    val flights = getFlights.invoke()
-    val flight = getFlights.getFlight()
+
+    val format = PresentationFormat.CONSOLE
+    val flightFormat = FlightPresentationFactory().getPresentationFormat(format)
+    val flights = GetFlights(flightFormat).invoke()
+    val flight = GetFlights(flightFormat).getFlight()
     val getTicket = GetTicket(flight, TicketHTMLFormat())
     val ticket = getTicket.invoke()
 
