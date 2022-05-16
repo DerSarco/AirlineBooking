@@ -1,11 +1,14 @@
 package domain.usecases.flight
 
+import domain.datasource.ticket.TicketDataSource
 import domain.model.Flight
 
 
-class GetFlightSaved {
+class GetFlightSaved(
+    private val ticketDataSource: TicketDataSource
+) {
 
     operator fun invoke(): Flight {
-        TODO()
+        return ticketDataSource.tickets.first().flight
     }
 }

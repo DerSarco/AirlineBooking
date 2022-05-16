@@ -6,9 +6,8 @@ import domain.model.baggage.type.BaggageType
 import java.math.BigDecimal
 
 abstract class Regular(
-    override val price: BigDecimal
+    override var price: BigDecimal
 ) : BaggagePackage() {
-
     abstract override val name: String
     abstract override val boardingTurn: BoardingTurn
 }

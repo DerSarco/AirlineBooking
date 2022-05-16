@@ -16,12 +16,8 @@ class GetTicket(
 ) {
 
     fun invoke(): String{
-        val ticket = Ticket(
-            flight,
-            passenger = getPassenger(),
-            seat = getSeat(),
-            baggagePackage = getBaggagePackage()
-        )
+        val ticket = Ticket()
+        ticket.flight = flight
 
         return formatter.format(ticket)
     }

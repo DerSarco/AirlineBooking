@@ -5,10 +5,16 @@ import domain.model.seat.Seat
 import domain.presentation.Formatter
 import java.math.BigDecimal
 
-data class Ticket(
-    val flight: Flight,
-    val passenger: Passenger,
-    val seat: Seat,
-    val baggagePackage: BaggagePackage,
-    val totalPrice: BigDecimal = flight.price + baggagePackage.price + seat.price
-)
+class Ticket {
+    lateinit var flight: Flight
+    lateinit var passenger: Passenger
+    lateinit var seat: Seat
+    lateinit var baggagePackage: BaggagePackage
+    val totalPrice: BigDecimal //=
+        get() {
+            return if (this::flight.isInitialized && this::baggagePackage.isInitialized && this::seat.isInitialized)
+                flight.price + baggagePackage.price + seat.price
+            else
+                BigDecimal(0)
+        }
+}
