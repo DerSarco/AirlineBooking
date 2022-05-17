@@ -5,7 +5,7 @@ import domain.presentation.Formatter
 import presentation.PresentationFormat
 import presentation.flight.formats.FlightConsoleFormat
 
-class PresentationFactory: presentation.PresentationFactory<Flight> {
+class FlightPresentationFactory: presentation.PresentationFactory<Flight> {
 
     override fun getPresentationFormat(format: PresentationFormat): Formatter<Flight> {
         return when (format) {
