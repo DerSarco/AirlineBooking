@@ -1,12 +1,14 @@
 package domain.usecases.reservation
 
 import data.reservation.ReservationListSingleton
+import domain.datasource.reservation.ReservationDataSource
+import domain.datasource.ticket.TicketDataSource
 import domain.model.Reservation
 
 class GetReservation(
-    private val reservationListSingleton: ReservationListSingleton
+    private val reservationDataSource: ReservationDataSource
 ) {
     operator fun invoke(): Reservation {
-        return reservationListSingleton.reservation
+        return reservationDataSource.reservation
     }
 }

@@ -1,5 +1,6 @@
 import data.baggage.BaggageRegularLocalSource
 import data.baggage.BaggageVClubLocalSource
+import data.reservation.ReservationListSingleton
 import domain.model.Flight
 import domain.model.Passenger
 import domain.presentation.Formatter
@@ -7,7 +8,6 @@ import domain.usecases.baggage.GetBaggagePackage
 import domain.usecases.flight.GetFlightSaved
 import domain.usecases.flight.GetFlights
 import domain.usecases.flight.di.FlightDataDI
-import domain.usecases.ticket.AssignFlightToTicket
 import domain.usecases.ticket.di.TicketDataDI
 import presentation.PresentationFormat
 import presentation.baggage.BaggagePackageEnum
@@ -19,16 +19,17 @@ import domain.model.baggage.pack.BaggagePackage
 import domain.model.seat.Seat
 import domain.model.seat.SeatSection
 import domain.usecases.baggage.GetBaggageSaved
+import domain.usecases.reservation.AssignTicketToReservation
+import domain.usecases.reservation.GetReservation
 import domain.usecases.seat.GetSeatSaved
 import domain.usecases.seat.GetSeatsBy
 import domain.usecases.seat.GetSeatsSection
-import domain.usecases.ticket.AssignBaggagePackToTicket
-import domain.usecases.ticket.AssignPassengersToTicket
-import domain.usecases.ticket.AssignSeatToTicket
+import domain.usecases.ticket.*
 import presentation.baggage.BaggagePackPresentationFactory
 import presentation.extFunction.isNumber
 import presentation.menu.UIInputData
 import presentation.passenger.PassengerPresentationFactory
+import presentation.reservation.ReservationPresentationFactory
 import presentation.seat.SeatPresentationFactory
 import presentation.seat.seatsection.SeatSectionPresentationFactory
 
@@ -38,11 +39,14 @@ fun main() {
     val baggagePresentation = BaggagePackPresentationFactory().getPresentationFormat(format)
     val seatPresentation = SeatPresentationFactory().getPresentationFormat(format)
     val seatSectionPresentation = SeatSectionPresentationFactory().getPresentationFormat(format)
-    val passengerSectionPresentation = PassengerPresentationFactory().getPresentationFormat(format)
+    val passengerPresentation = PassengerPresentationFactory().getPresentationFormat(format)
+    val reservationPresentation = ReservationPresentationFactory().getPresentationFormat(format)
 
 
     val ticketData = TicketDataDI().providesTicketsData()
     val flightData = FlightDataDI().providesFlightsData()
+    val reservationData = ReservationListSingleton()
+
     val flightsMap = GetFlights(flightData).invoke(Month.JANUARY)
 
     val uiMenuFlight = object : UIMenu<Flight> {}
@@ -72,7 +76,7 @@ fun main() {
         uiMenuBaggagePackOpt.showMenu(baggagePackageOptions, object : Formatter<BaggagePackageEnum> {
             override fun format(t: BaggagePackageEnum): String = t.name
         })
-    val baggagePackData = when(baggagePackageOptSelected) {
+    val baggagePackData = when (baggagePackageOptSelected) {
         BaggagePackageEnum.Regular -> BaggageRegularLocalSource()
         BaggagePackageEnum.VClub -> BaggageVClubLocalSource()
         else -> BaggageRegularLocalSource()
@@ -114,7 +118,7 @@ fun main() {
     do {
         println("How many passengers are?")
         passengerQty = readLine().orEmpty()
-    }while (!passengerQty.isNumber())
+    } while (!passengerQty.isNumber())
 
     val passengers = (1..passengerQty.toInt()).map {
         println("Passenger: $it")
@@ -128,11 +132,22 @@ fun main() {
     AssignPassengersToTicket(ticketData).invoke(passengers)
 
     println(
-        passengerSectionPresentation.format(passengers)
+        passengerPresentation.format(passengers)
     )
 
+    /****/
+    AssignTicketToReservation(
+        reservationData,
+        GetTickets(ticketData)
+    ).invoke()
 
+    val reservation = GetReservation(reservationData).invoke()
 
+    println()
+    println("*** RESERVATION ***")
+    println(
+        reservationPresentation.format(reservation)
+    )
 
 
 }
