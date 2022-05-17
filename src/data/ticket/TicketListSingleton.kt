@@ -10,5 +10,5 @@ class TicketListSingleton: TicketDataSource {
             Ticket()
         )
     }
-    override val tickets: List<Ticket> = TicketListSingleton.tickets
+    override var tickets: List<Ticket> = TicketListSingleton.tickets
 }

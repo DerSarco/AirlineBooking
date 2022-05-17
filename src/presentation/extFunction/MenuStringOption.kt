@@ -2,6 +2,10 @@ package presentation.extFunction
 
 import domain.model.Flight
 
+fun String.isBlankOrEmpty(): Boolean {
+    return this.isBlank() || this.isEmpty()
+}
+
 fun String.isNotBlankOrEmpty(): Boolean {
     return this.isNotBlank() || this.isNotEmpty()
 }

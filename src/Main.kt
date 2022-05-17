@@ -1,6 +1,7 @@
 import data.baggage.BaggageRegularLocalSource
 import data.baggage.BaggageVClubLocalSource
 import domain.model.Flight
+import domain.model.Passenger
 import domain.presentation.Formatter
 import domain.usecases.baggage.GetBaggagePackage
 import domain.usecases.flight.GetFlightSaved
@@ -22,8 +23,12 @@ import domain.usecases.seat.GetSeatSaved
 import domain.usecases.seat.GetSeatsBy
 import domain.usecases.seat.GetSeatsSection
 import domain.usecases.ticket.AssignBaggagePackToTicket
+import domain.usecases.ticket.AssignPassengersToTicket
 import domain.usecases.ticket.AssignSeatToTicket
 import presentation.baggage.BaggagePackPresentationFactory
+import presentation.extFunction.isNumber
+import presentation.menu.UIInputData
+import presentation.passenger.PassengerPresentationFactory
 import presentation.seat.SeatPresentationFactory
 import presentation.seat.seatsection.SeatSectionPresentationFactory
 
@@ -33,6 +38,7 @@ fun main() {
     val baggagePresentation = BaggagePackPresentationFactory().getPresentationFormat(format)
     val seatPresentation = SeatPresentationFactory().getPresentationFormat(format)
     val seatSectionPresentation = SeatSectionPresentationFactory().getPresentationFormat(format)
+    val passengerSectionPresentation = PassengerPresentationFactory().getPresentationFormat(format)
 
 
     val ticketData = TicketDataDI().providesTicketsData()
@@ -101,6 +107,32 @@ fun main() {
 
     println("Seat Saved")
     println(seatPresentation.format(seatSaved))
+
+    /** 7. Introduce information passenger**/
+    var passengerQty = ""
+
+    do {
+        println("How many passengers are?")
+        passengerQty = readLine().orEmpty()
+    }while (!passengerQty.isNumber())
+
+    val passengers = (1..passengerQty.toInt()).map {
+        println("Passenger: $it")
+        val uiInputData = object : UIInputData {}
+        val name = uiInputData.requestField("Name")
+        val email = uiInputData.requestField("Email")
+        val phone = uiInputData.requestField("Phone")
+        Passenger(name, email, phone)
+    }
+
+    AssignPassengersToTicket(ticketData).invoke(passengers)
+
+    println(
+        passengerSectionPresentation.format(passengers)
+    )
+
+
+
 
 
 }
